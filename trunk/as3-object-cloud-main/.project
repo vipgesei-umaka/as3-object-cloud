@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>as3-object-cloud-main</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.powerflasher.fdt.core.FlashBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.powerflasher.fdt.core.FlashNature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>PM_PRNG</name>
+			<type>2</type>
+			<location>C:/libs/prng_parkmiller_as3</location>
+		</link>
+		<link>
+			<name>playerglobal.swc</name>
+			<type>1</type>
+			<locationURI>Flex_3_SDK_0/frameworks/libs/player/10/playerglobal.swc</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>
