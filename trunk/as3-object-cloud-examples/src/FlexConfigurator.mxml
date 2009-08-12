@@ -8,9 +8,7 @@
 		import at.leichtgewicht.cloud.SwitchAngleAlgorithm;
 		import at.leichtgewicht.cloud.DefaultTextRenderer;
 		import at.leichtgewicht.cloud.IPositionAlgorithm;
-		
-//		[Embed(source="CronosPro-Disp.otf", fontFamily="cronos")]
-//		public static const fontClass: Class;
+		import at.leichtgewicht.cloud.ui.ProgressDisplay;
 		
 		[Embed(source="Vera.ttf", fontFamily="vera")]
 		public static const fontClass: Class;
@@ -22,6 +20,7 @@
 		private var _switchAlgorithm: SwitchAngleAlgorithm;
 		private var _loaded: Boolean = false;
 		private var _textRenderer: DefaultTextRenderer = new DefaultTextRenderer();
+		private var _progressDisplay: ProgressDisplay;
 		
 		private function onCreationComplete(): void
 		{
@@ -31,9 +30,10 @@
 			_textRenderer.fontName = font.fontName;
 			_textRenderer.embeddedFont = true;
 			_cloud = new TagCloud();
-			_cloud.x = 270;
-			_cloud.y = 20;
-			rawChildren.addChild( _cloud );
+			_progressDisplay = new ProgressDisplay( _cloud );
+			_progressDisplay.x = 270;
+			_progressDisplay.y = 20;
+			rawChildren.addChild( _progressDisplay );
 			update();
 		}
 		
