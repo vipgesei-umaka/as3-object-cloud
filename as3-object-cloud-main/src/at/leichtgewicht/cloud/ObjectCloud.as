@@ -51,7 +51,7 @@ package at.leichtgewicht.cloud
 				_container.addChild( object );
 				refreshSize();
 			}
-			dispatchEvent( event );
+			dispatchEvent( new PositionEvent( event.type, event.percentage, event.object ) );
 		}
 		
 		public function get percentage(): Number

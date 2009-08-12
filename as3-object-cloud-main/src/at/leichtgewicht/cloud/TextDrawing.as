@@ -14,14 +14,19 @@
 //
 package at.leichtgewicht.cloud
 {
+	import Boolean;
+	import Number;
+	import String;
+	import at.leichtgewicht.cloud.TextDrawing;
+	import at.leichtgewicht.util.IClonable;
 	import at.leichtgewicht.util.IClonableDisplayObject;
-	
+
 	import flash.display.Sprite;
 	import flash.filters.GlowFilter;
 	import flash.text.AntiAliasType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
-	import flash.text.TextFormat;	
+	import flash.text.TextFormat;
 
 	/**
 	 * @author Martin Heidegger
@@ -75,7 +80,7 @@ package at.leichtgewicht.cloud
 			return _tf.width * _tf.height;
 		}
 		
-		public function clone(): IClonableDisplayObject
+		public function clone(): IClonable
 		{
 			var result: TextDrawing = new TextDrawing( _fontName, _embeddedFont, _text, _safetyBorder, _size, _rotation );
 			result.x = x;
