@@ -82,12 +82,11 @@ package at.leichtgewicht.cloud
 			
 			_container.width = 100;
 			_container.scaleY = _container.scaleX;
-
+			
 			var f1: Number = width/height;
 			var f2: Number = _container.width / _container.height;
 			var xOffset: Number = 0;
 			var yOffset: Number = 0;
-			
 			
 			if( f1 < f2 )
 			{
