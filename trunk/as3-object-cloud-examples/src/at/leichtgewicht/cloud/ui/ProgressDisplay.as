@@ -1,5 +1,6 @@
 package at.leichtgewicht.cloud.ui 
 {
+	import at.leichtgewicht.util.SizeFitter;
 	import at.leichtgewicht.cloud.PositionEvent;
 	import at.leichtgewicht.cloud.ObjectCloud;
 
@@ -12,14 +13,14 @@ package at.leichtgewicht.cloud.ui
 	public class ProgressDisplay extends Sprite 
 	{
 		private var _progressRing: ProgressRing;
-		
+		private var _sizeFitter: SizeFitter;
+
 		public function ProgressDisplay( cloud: ObjectCloud )
 		{
 			addChild( _progressRing = new ProgressRing() );
 			_progressRing.visible = false;
-
-			addChild( cloud );
 			cloud.addEventListener( PositionEvent.NEXT_POSITION_FOUND, onNextPosition );
+			addChild( _sizeFitter = new SizeFitter( cloud ) );
 		}
 
 		private function onNextPosition( event: PositionEvent ): void
