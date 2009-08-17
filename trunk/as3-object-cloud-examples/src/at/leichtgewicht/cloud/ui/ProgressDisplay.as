@@ -1,7 +1,7 @@
 package at.leichtgewicht.cloud.ui 
 {
-	import at.leichtgewicht.util.SizeFitter;
-	import at.leichtgewicht.cloud.PositionEvent;
+	import at.leichtgewicht.cloud.tool.SizeFitter;
+	import at.leichtgewicht.cloud.RenderProgressEvent;
 	import at.leichtgewicht.cloud.ObjectCloud;
 
 	import flash.display.Sprite;
@@ -19,11 +19,11 @@ package at.leichtgewicht.cloud.ui
 		{
 			addChild( _progressRing = new ProgressRing() );
 			_progressRing.visible = false;
-			cloud.addEventListener( PositionEvent.NEXT_POSITION_FOUND, onNextPosition );
+			cloud.addEventListener( RenderProgressEvent.UPDATE, onNextPosition );
 			addChild( _sizeFitter = new SizeFitter( cloud ) );
 		}
 
-		private function onNextPosition( event: PositionEvent ): void
+		private function onNextPosition( event: RenderProgressEvent ): void
 		{
 			if( _progressRing.visible = ( event.percentage != 1 ) )
 			{
