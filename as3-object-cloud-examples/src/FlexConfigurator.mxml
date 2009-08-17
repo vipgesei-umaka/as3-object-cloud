@@ -3,11 +3,11 @@
 
 	<mx:Script>
 	<![CDATA[
-		import at.leichtgewicht.cloud.TagCloud;
-		import at.leichtgewicht.cloud.CirclePositionAlgorithm;
-		import at.leichtgewicht.cloud.SwitchAngleAlgorithm;
-		import at.leichtgewicht.cloud.DefaultTextRenderer;
-		import at.leichtgewicht.cloud.IPositionAlgorithm;
+		import at.leichtgewicht.cloud.text.DefaultTextRenderer;
+		import at.leichtgewicht.cloud.text.TagCloud;
+		import at.leichtgewicht.cloud.algorithm.CirclePositionAlgorithm;
+		import at.leichtgewicht.cloud.algorithm.SwitchAngleAlgorithm;
+		import at.leichtgewicht.cloud.algorithm.IPositionAlgorithm;
 		import at.leichtgewicht.cloud.ui.ProgressDisplay;
 		
 		[Embed(source="Vera.ttf", fontFamily="vera")]
