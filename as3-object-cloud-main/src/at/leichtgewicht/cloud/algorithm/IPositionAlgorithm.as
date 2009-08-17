@@ -12,46 +12,17 @@
 //
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-package at.leichtgewicht.cloud
+package at.leichtgewicht.cloud.algorithm
 {
+	import flash.events.IEventDispatcher;
+
 	/**
 	 * @author Martin Heidegger
 	 * @version 1.0
 	 */
-	public class WeightedWord
+	public interface IPositionAlgorithm extends IEventDispatcher
 	{
-
-		private var _word: String;
-		private var _amount: int;
-		private var _wordRating: WeightedWords;
-
-		public function WeightedWord( word: String, wordRating: WeightedWords )
-		{
-			_wordRating = wordRating;
-			_amount = 0;
-			_word = word;
-		}
-		
-		public function get word(): String
-		{
-			return _word;
-		}
-		
-		public function get amount(): int
-		{
-			return _amount;
-		}
-		
-		public function get percentage(): Number
-		{
-			var min: int = _wordRating.min;
-			var max: int = _wordRating.max;
-			return (amount-min)/(max-min);
-		}
-
-		public function increment(): void
-		{
-			_amount ++;
-		}
+		function drawObjects( objects: Array ): void;
+		function get percentage(): Number;
 	}
 }
