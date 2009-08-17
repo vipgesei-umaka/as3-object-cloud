@@ -1,8 +1,8 @@
-package at.leichtgewicht.util 
+package at.leichtgewicht.cloud.tool 
 {
 	import flash.geom.Rectangle;
 
-	import at.leichtgewicht.cloud.PositionEvent;
+	import at.leichtgewicht.cloud.RenderProgressEvent;
 	import at.leichtgewicht.cloud.ObjectCloud;
 	import flash.display.Sprite;
 
@@ -18,10 +18,10 @@ package at.leichtgewicht.util
 		public function SizeFitter( cloud: ObjectCloud )
 		{
 			addChild( _cloud = cloud );
-			_cloud.addEventListener( PositionEvent.NEXT_POSITION_FOUND, onPositionFound );
+			_cloud.addEventListener( RenderProgressEvent.UPDATE, onPositionFound );
 		}
 		
-		private function onPositionFound(event: PositionEvent): void
+		private function onPositionFound(event: RenderProgressEvent): void
 		{
 			_cloud.width = _targetWidth;
 			_cloud.scaleY = _cloud.scaleX;

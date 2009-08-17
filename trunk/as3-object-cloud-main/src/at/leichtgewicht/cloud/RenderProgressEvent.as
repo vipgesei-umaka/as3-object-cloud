@@ -12,17 +12,37 @@
 //
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-package at.leichtgewicht.cloud
+package at.leichtgewicht.cloud 
 {
-	import flash.events.IEventDispatcher;
-
+	import at.leichtgewicht.util.IClonableDisplayObject;	
+	import flash.events.Event;	
+	
 	/**
 	 * @author Martin Heidegger
 	 * @version 1.0
 	 */
-	public interface IPositionAlgorithm extends IEventDispatcher
+	public class RenderProgressEvent extends Event
 	{
-		function drawObjects( objects: Array ): void;
-		function get percentage(): Number;
+		public static const UPDATE: String = "at.leichtgewicht.cloud.RenderProgressEvent::UPDATE";
+	
+		private var _positionatedObject: IClonableDisplayObject;
+		private var _percentage: Number;
+		
+		public function RenderProgressEvent( type: String, percentage: Number, positionatedObject: IClonableDisplayObject )
+		{
+			super( type );
+			_positionatedObject = positionatedObject;
+			_percentage = percentage;
+		}
+		
+		public function get positionatedObject(): IClonableDisplayObject
+		{
+			return _positionatedObject;
+		}
+		
+		public function get percentage(): Number
+		{
+			return _percentage;
+		}
 	}
 }

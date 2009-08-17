@@ -14,6 +14,7 @@
 //
 package at.leichtgewicht.cloud
 {
+	import at.leichtgewicht.cloud.algorithm.IPositionAlgorithm;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 
@@ -45,12 +46,12 @@ package at.leichtgewicht.cloud
 		{
 			if( _strategy )
 			{
-				_strategy.removeEventListener( PositionEvent.NEXT_POSITION_FOUND, onPositionEvent );
+				_strategy.removeEventListener( RenderProgressEvent.UPDATE, onPositionEvent );
 			}
 			_strategy = strategy;
 			if( _strategy )
 			{
-				_strategy.addEventListener( PositionEvent.NEXT_POSITION_FOUND, onPositionEvent );
+				_strategy.addEventListener( RenderProgressEvent.UPDATE, onPositionEvent );
 			}
 			clear();
 		}
@@ -78,16 +79,16 @@ package at.leichtgewicht.cloud
 			}
 		}
 		
-		private function onPositionEvent( event: PositionEvent ): void
+		private function onPositionEvent( event: RenderProgressEvent ): void
 		{
-			if( event.object )
+			if( event.positionatedObject )
 			{
-				var object: DisplayObject = DisplayObject( event.object.clone() );
+				var object: DisplayObject = DisplayObject( event.positionatedObject.clone() );
 				object.filters = null;
 				object.alpha = 1;
 				_container.addChild( object );
 			}
-			dispatchEvent( new PositionEvent( event.type, event.percentage, event.object ) );
+			dispatchEvent( new RenderProgressEvent( event.type, event.percentage, event.positionatedObject ) );
 		}
 	}
 }
