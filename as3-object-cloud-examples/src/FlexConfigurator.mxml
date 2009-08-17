@@ -83,7 +83,8 @@
 				{
 					algo = _switchAlgorithm;
 				}
-				_cloud.drawText( text.text, algo, _textRenderer, shuffle.selected );
+				_cloud.strategy = algo;
+				_cloud.drawText( text.text, _textRenderer, shuffle.selected );
 			}
 		}
 	]]>
