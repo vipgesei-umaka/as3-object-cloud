@@ -16,8 +16,8 @@ package at.leichtgewicht.cloud
 {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.geom.Rectangle;
 
+	
 	/**
 	 * @author Martin Heidegger
 	 * @version 1.0
@@ -25,20 +25,57 @@ package at.leichtgewicht.cloud
 	public class ObjectCloud extends Sprite
 	{
 		private var _container: Sprite;
-		private var _width: Number = 250;
-		private var _height: Number = 300;
 		private var _strategy: IPositionAlgorithm;
+		private var _objects: Array;
 
-		public function ObjectCloud()
+		public function ObjectCloud() {}
+		
+		public function set objects( objects: Array ): void
 		{
+			_objects = objects;
+			clear();
 		}
 		
-		public function draw( objects: Array, strategy: IPositionAlgorithm ): void
+		public function get objects(): Array
 		{
-			clear( );
+			return _objects;
+		}
+		
+		public function set strategy(strategy: IPositionAlgorithm): void
+		{
+			if( _strategy )
+			{
+				_strategy.removeEventListener( PositionEvent.NEXT_POSITION_FOUND, onPositionEvent );
+			}
 			_strategy = strategy;
-			_strategy.drawObjects( objects );
-			_strategy.addEventListener( PositionEvent.NEXT_POSITION_FOUND, onPositionEvent );
+			if( _strategy )
+			{
+				_strategy.addEventListener( PositionEvent.NEXT_POSITION_FOUND, onPositionEvent );
+			}
+			clear();
+		}
+		
+		public function get strategy(): IPositionAlgorithm
+		{
+			return _strategy;
+		}
+		
+		public function get percentage(): Number
+		{
+			return _strategy.percentage;
+		}
+		
+		private function clear(): void
+		{
+			if( _container )
+			{
+				removeChild( _container );
+			}
+			addChildAt( _container = new Sprite(), 0 );
+			if( _strategy && _objects )
+			{
+				_strategy.drawObjects( _objects );
+			}
 		}
 		
 		private function onPositionEvent( event: PositionEvent ): void
@@ -49,61 +86,8 @@ package at.leichtgewicht.cloud
 				object.filters = null;
 				object.alpha = 1;
 				_container.addChild( object );
-				refreshSize();
 			}
 			dispatchEvent( new PositionEvent( event.type, event.percentage, event.object ) );
-		}
-		
-		public function get percentage(): Number
-		{
-			return _strategy.percentage;
-		}
-		
-		private function clear(): void
-		{
-			if( null != _container )
-			{
-				removeChild( _container );
-			}
-			addChildAt( _container = new Sprite(), 0 );
-		}
-		
-		public function setSize( width: Number, height: Number ): void
-		{
-			_width = width;
-			_height = height;
-			refreshSize();
-		}
-		
-		private function refreshSize(): void
-		{
-			var width: Number = _width;
-			var height: Number = _height;
-			
-			_container.width = 100;
-			_container.scaleY = _container.scaleX;
-			
-			var f1: Number = width/height;
-			var f2: Number = _container.width / _container.height;
-			var xOffset: Number = 0;
-			var yOffset: Number = 0;
-			
-			if( f1 < f2 )
-			{
-				_container.width = width;
-				_container.scaleY = _container.scaleX;
-				yOffset = ( height - _container.height ) / 2;
-			}
-			else
-			{
-				_container.height = height;
-				_container.scaleX = _container.scaleY;
-				xOffset = ( width - _container.width ) / 2;
-			}
-			
-			var bounds: Rectangle = _container.getBounds( _container );
-			_container.x = -bounds.x * _container.scaleX + xOffset;
-			_container.y = -bounds.y * _container.scaleY + yOffset;
 		}
 	}
 }

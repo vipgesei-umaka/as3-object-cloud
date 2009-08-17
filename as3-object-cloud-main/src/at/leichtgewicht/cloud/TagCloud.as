@@ -22,20 +22,20 @@ package at.leichtgewicht.cloud
 	 */
 	public class TagCloud extends ObjectCloud
 	{
-		public function drawText( text: String, algorithm: IPositionAlgorithm, textRenderer: ITextRenderer, shuffle: Boolean = true ): void
+		public function drawText( text: String, textRenderer: ITextRenderer, shuffle: Boolean = true ): void
 		{
 			var prng: PM_PRNG = new PM_PRNG();
 			var weights: Array = new WeightedWords( text ).getWordWeightsSorted();
-			var drawings: Array = [];
+			var texts: Array = [];
 			for each ( var weightedWord: WeightedWord in weights )
 			{
-				drawings.push( textRenderer.render( weightedWord ) );
+				texts.push( textRenderer.render( weightedWord ) );
 			}
 			if( shuffle )
 			{
-				drawings = shuffleArray( drawings, prng );
+				texts = shuffleArray( texts, prng );
 			}
-			draw( drawings, algorithm );
+			objects = texts;
 		}
 		
 		private function shuffleArray( array: Array, prng: PM_PRNG ): Array
