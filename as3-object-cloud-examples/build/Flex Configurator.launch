@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="com.powerflasher.fdt.ui.MxmlcGroup">
 <stringAttribute key="APP_ARGUMENTS" value=""/>
-<stringAttribute key="ARGUMENTS" value="-default-size 550 400 -default-frame-rate 31 -default-background-color 0xFFFFFF -library-path {flexSDK}/frameworks/locale/en_US"/>
+<stringAttribute key="ARGUMENTS" value="-default-size 550 400 -default-frame-rate 900 -default-background-color 0xFFFFFF -library-path {flexSDK}/frameworks/locale/en_US"/>
 <stringAttribute key="FLEX_SDK_NAME" value="Flex_3_SDK_0_for_FP_10"/>
 <stringAttribute key="MAIN_CLASS" value="src/FlexConfigurator.mxml"/>
 <stringAttribute key="OUTPUT" value="bin/FlexConfigurator.swf"/>
@@ -16,7 +16,7 @@
 <stringAttribute key="PUBLISHER_ID" value=""/>
 <booleanAttribute key="START_SWF_ENABLED" value="true"/>
 <stringAttribute key="START_SWF_LOCATION" value="bin/FlexConfigurator.swf"/>
-<stringAttribute key="START_SWF_WITH" value="External SWF Viewer"/>
+<stringAttribute key="START_SWF_WITH" value="Adobe Flash Player"/>
 <booleanAttribute key="USE_GLOBAL_FCSH_LOCATION" value="true"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/as3-object-cloud-examples"/>
