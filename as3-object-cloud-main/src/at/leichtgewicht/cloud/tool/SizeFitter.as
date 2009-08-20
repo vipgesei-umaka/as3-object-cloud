@@ -26,8 +26,8 @@ package at.leichtgewicht.cloud.tool
 			_cloud.width = _targetWidth;
 			_cloud.scaleY = _cloud.scaleX;
 			var bounds: Rectangle = _cloud.getBounds( _cloud );
-			_cloud.x = -bounds.x;
-			_cloud.y = -bounds.y;
+			_cloud.x = -bounds.x * _cloud.scaleX;
+			_cloud.y = -bounds.y * _cloud.scaleY;
 		}
 		
 		public function get targetWidth(): Number

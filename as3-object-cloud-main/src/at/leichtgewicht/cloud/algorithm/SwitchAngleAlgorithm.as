@@ -14,16 +14,12 @@
 //
 package at.leichtgewicht.cloud.algorithm 
 {
-	
-	import flash.geom.Point;	
-	
-	import de.polygonal.math.PM_PRNG;	
-	
-	import at.leichtgewicht.util.AdvancedHitTest;	
-	
-	import flash.geom.Rectangle;	
-	import flash.display.Sprite;	
-	import flash.display.DisplayObject;	
+	import de.polygonal.math.PM_PRNG;
+
+	import flash.display.DisplayObject;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+
 	
 	/**
 	 * @author Martin Heidegger
@@ -34,7 +30,7 @@ package at.leichtgewicht.cloud.algorithm
 		private var _currentChildStartY: Number;
 		private var _currentChildStartX: Number;
 		private var _currentChild: DisplayObject;
-		private var _container: Sprite;
+		private var _container: ShapeOverlapTester;
 		private var _currentFactor: Number;
 		private var _currentBounds: Rectangle;
 		private var _xDirection: Number;
@@ -53,22 +49,22 @@ package at.leichtgewicht.cloud.algorithm
 		override protected function clear(): void
 		{
 			super.clear();
-			_container = new Sprite();
+			_container = new ShapeOverlapTester();
 			_prng = new PM_PRNG( );
 			_currentChildPos = new Point();
 		}
 		
-		override protected function tryNextPosition( offset: Point ): Boolean
+		override protected function tryNextPosition(): Boolean
 		{
-			var x: Number = offset.x * ( _currentChild.x + _xDirection );
-			var y: Number = offset.y * ( _currentChild.y + _yDirection );
+			var x: Number = ( _currentChild.x + _xDirection );
+			var y: Number = ( _currentChild.y + _yDirection );
 			
 			_currentChild.x = x;
 			_currentChild.y = y;
 			_currentBounds.x = _currentChildPos.x + x;
 			_currentBounds.y = _currentChildPos.y + y;
 			
-			return AdvancedHitTest.darkDetection( _container, _currentBounds );
+			return _container.test( _currentBounds );
 		}
 		
 		override protected function set current( current: DisplayObject ): void

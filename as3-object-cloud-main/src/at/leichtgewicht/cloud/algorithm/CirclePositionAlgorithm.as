@@ -14,25 +14,23 @@
 //
 package at.leichtgewicht.cloud.algorithm 
 {
-	import at.leichtgewicht.util.AdvancedHitTest;
-	
 	import de.polygonal.math.PM_PRNG;
-	
-	import flash.display.DisplayObject;
-	import flash.display.Sprite;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;	
 
+	import flash.display.DisplayObject;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+
+	
 	/**
 	 * @author Martin Heidegger
 	 * @version 1.0
 	 */
 	public class CirclePositionAlgorithm extends AbstractStraightPositionAlogrithm
 	{
-		private var _container: Sprite;
-		private var _tries: Number;
+		private const _container: ShapeOverlapTester = new ShapeOverlapTester();
+		private var _tries: int;
 		private var _currentRadius: Number;
-		private var _currentFactor: Number;
+		private var _currentRatioFactor: Number;
 		private var _prng: PM_PRNG;
 		private var _currentChild: DisplayObject;
 		private var _currentChildPos: Point;
@@ -41,12 +39,14 @@ package at.leichtgewicht.cloud.algorithm
 		private var _currentBounds: Rectangle;
 		private var _currentAngle: Number;
 		private var _sizeWeight: Number = 0.8;
-		private var _radiusStep: Number = 15;
-		private var _minTries: Number = 1;
-		private var _triesPerRadius: Number = 6;
+		private var _radiusStep: Number = 15.0;
+		private var _minTries: int = 1;
+		private var _triesPerRadius: int = 6;
 		private var _reuseFormerPosition: Boolean = false;
 		private var _relativeAngle: Boolean = false;
-		
+		private var _currentRadiusFactor: Number;
+		private const _twoMathPI: Number = 2 * Math.PI;
+
 		public function CirclePositionAlgorithm()
 		{
 			super();
@@ -56,40 +56,36 @@ package at.leichtgewicht.cloud.algorithm
 		override protected function clear(): void
 		{
 			super.clear();
-			_container = new Sprite();
-			_prng = new PM_PRNG( );
+			_container.clear();
+			_prng = new PM_PRNG();
 			_currentChild = null;
 			_currentRadius = 0;
 			_currentAngle = 0;
 			_tries = 0;
 		}
 		
-		override protected function tryNextPosition( offset: Point ): Boolean
+		override protected function tryNextPosition(): Boolean
 		{
-			if( _tries > ( _minTries + _currentRadius / _triesPerRadius ) )
+			if( --_tries )
 			{
-				_tries = 0;
-				_currentRadius += _radiusStep + _currentFactor * _prng.nextDouble();
+				_currentRadius += _radiusStep + _currentRatioFactor * _prng.nextDouble();
+				_tries = _minTries + _currentRadius / _triesPerRadius + 1;
 			}
-			_tries ++;
 			
-			var angle: Number = ( _prng.nextDouble() * 360 ) % 360;
-			var factor: Number = _sizeWeight + ( 1 - _sizeWeight ) * _currentChild.width/_currentChild.height;
-			var x: Number = offset.x * ( _currentChildStartX + Math.cos( angle / 180 * Math.PI ) * _currentRadius * factor );
-			var y: Number = offset.y * ( _currentChildStartY + Math.sin( angle / 180 * Math.PI ) * _currentRadius / factor );
+			const angle: Number = _prng.nextDoubleRange( 0.0, _twoMathPI );
 			
-			_currentChild.x = x;
-			_currentChild.y = y;
-			_currentBounds.x = _currentChildPos.x + x;
-			_currentBounds.y = _currentChildPos.y + y;
+			_currentChild.x = ( _currentChildStartX + Math.cos( angle ) * _currentRadius * _currentRadiusFactor );
+			_currentChild.y = ( _currentChildStartY + Math.sin( angle ) * _currentRadius / _currentRadiusFactor );
+			_currentBounds.x = _currentChildPos.x + _currentChild.x;
+			_currentBounds.y = _currentChildPos.y + _currentChild.y;
 			
-			return AdvancedHitTest.darkDetection( _container, _currentBounds );
+			return _container.test( _currentBounds );
 		}
 		
 		override protected function set current( current: DisplayObject ): void
 		{
-			_currentChildStartX = 0;
-			_currentChildStartY = 0;
+			_currentChildStartX = 0.0;
+			_currentChildStartY = 0.0;
 				
 			if( null != _currentChild && _reuseFormerPosition )
 			{
@@ -102,32 +98,35 @@ package at.leichtgewicht.cloud.algorithm
 			
 			_container.addChild( _currentChild );
 			
-			_currentFactor = Math.sqrt( _currentChild.height / _currentChild.width );
+			var currentSizeFactor: Number = _currentChild.height / _currentChild.width;
+			_currentRadiusFactor = ( 1.0 - _sizeWeight ) + _sizeWeight * currentSizeFactor;
+			_currentRatioFactor = Math.sqrt( currentSizeFactor );
 			
 			_currentBounds = _currentChild.getBounds( _container );
 			_currentChildPos.x = _currentBounds.x;
 			_currentChildPos.y = _currentBounds.y;
 			
+			_currentBounds.x = 0.0;
+			_currentBounds.y = 0.0;
+			
 			_currentChild.x = _currentChildStartX;
 			_currentChild.y = _currentChildStartY;
-
+			
 			if( _relativeAngle )
 			{
 				_currentAngle += Math.PI / 4;
-				var max: Number = Math.PI * 2;
-				if( _currentAngle >= max )
+				if( _currentAngle >= _twoMathPI )
 				{
-					_currentAngle -= max;
+					_currentAngle -= _twoMathPI;
 				}
 			}
 			else
 			{
-				_currentAngle = 2 * Math.PI * _prng.nextDouble();
+				_currentAngle = _twoMathPI * _prng.nextDouble();
 			}
-		
 			
-			_currentRadius = 5;
-			_tries = 0;
+			_currentRadius = 5.0;
+			_tries = 1;
 		}
 		
 		public function set sizeWeight(sizeWeight: Number): void
@@ -163,6 +162,11 @@ package at.leichtgewicht.cloud.algorithm
 		public function set relativeAngle(relativeAngle: Boolean): void
 		{
 			_relativeAngle = relativeAngle;
+		}
+		
+		public function get container(): ShapeOverlapTester
+		{
+			return _container;
 		}
 	}
 }

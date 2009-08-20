@@ -15,16 +15,15 @@
 package at.leichtgewicht.cloud.algorithm
 {
 	import at.leichtgewicht.cloud.RenderProgressEvent;
-	
 	import at.leichtgewicht.util.IClonableDisplayObject;
-	
+
 	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
-	import flash.geom.Point;
 	import flash.utils.Timer;
-	import flash.utils.getTimer;		
+	import flash.utils.getTimer;
 
+	
 	/**
 	 * @author Martin Heidegger
 	 * @version 1.0
@@ -35,14 +34,12 @@ package at.leichtgewicht.cloud.algorithm
 		private var _rawObjects: Array;
 		private var _currentObjectNo: Number = 0;
 		private var _timer: Timer;
-		private var _pointOffsetPool: Array = [ new Point( 1, 1 ) ];
-		private var _pointOffsetPoolPosition: int = -1;
 		private var _current: IClonableDisplayObject;
 
 		public function AbstractStraightPositionAlogrithm()
 		{
-			_timer = new Timer( 2 );
-			_timer.addEventListener( TimerEvent.TIMER, nextStep );
+			_timer = new Timer( Number.MIN_VALUE );
+			_timer.addEventListener( TimerEvent.TIMER, nextTry );
 		}
 		
 		public function drawObjects( rawObjects: Array ): void
@@ -56,9 +53,9 @@ package at.leichtgewicht.cloud.algorithm
 			
 			_timer.stop();
 			_timer.reset();
-			_timer.start();
+			_timer.start( );
 			
-			nextStep( );
+			nextTry( );
 		}
 		
 		public function get percentage(): Number
@@ -70,9 +67,8 @@ package at.leichtgewicht.cloud.algorithm
 		{
 		}
 		
-		protected function tryNextPosition( offset: Point ): Boolean
+		protected function tryNextPosition(): Boolean
 		{
-			offset;
 			throw new Error( "not implemented" );
 		}
 		
@@ -109,19 +105,9 @@ package at.leichtgewicht.cloud.algorithm
 			return finished;
 		}
 		
-		private function nextPositionOffset(): Point
+		private function nextTry( event: TimerEvent = null ): void
 		{
-			_pointOffsetPoolPosition ++;
-			if( _pointOffsetPoolPosition == _pointOffsetPool.length )
-			{
-				_pointOffsetPoolPosition = 0;
-			}
-			return _pointOffsetPool[ _pointOffsetPoolPosition ];
-		}
-		
-		private function nextStep( event: TimerEvent = null ): void
-		{
-			var executionStartTime: Number = getTimer();
+			const executionStartTime: int = getTimer();
 			if( _currentObjectNo == 0 )
 			{
 				current = DisplayObject( _current );
@@ -129,7 +115,7 @@ package at.leichtgewicht.cloud.algorithm
 			}
 			while( true )
 			{
-				if( !tryNextPosition( nextPositionOffset() ) )
+				if( !tryNextPosition() )
 				{
 					if( nextChild() )
 					{

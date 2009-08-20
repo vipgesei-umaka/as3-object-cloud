@@ -72,7 +72,7 @@ package at.leichtgewicht.cloud
 			{
 				removeChild( _container );
 			}
-			addChildAt( _container = new Sprite(), 0 );
+			addChild( _container = new Sprite() );
 			if( _strategy && _objects )
 			{
 				_strategy.drawObjects( _objects );
