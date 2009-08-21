@@ -17,9 +17,9 @@ package at.leichtgewicht.cloud.text
 	import Boolean;
 	import Number;
 	import String;
-	import at.leichtgewicht.util.IClonable;
-	import at.leichtgewicht.util.IClonableDisplayObject;
+	import at.leichtgewicht.cloud.IShapeSet;
 
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.filters.GlowFilter;
 	import flash.text.AntiAliasType;
@@ -32,64 +32,46 @@ package at.leichtgewicht.cloud.text
 	 * @author Martin Heidegger
 	 * @version 1.0
 	 */
-	public class TextDrawing extends Sprite implements IClonableDisplayObject
+	public class TextSet implements IShapeSet
 	{
-		private var _tf: TextField;
-		private var _text: String;
-		private var _size: Number;
-		private var _safetyBorder: Number;
-		private var _rotation: Number;
-		private var _fontName: String;
-		private var _embeddedFont: Boolean;
-
-		public function TextDrawing( fontName: String, embeddedFont: Boolean, text: String, safetyBorder: Number, size: Number, rotation: Number )
+		private var _object: DisplayObject;
+		private var _shape: DisplayObject;
+		
+		public function TextSet( fontName: String, embeddedFont: Boolean, text: String, safetyBorder: Number, size: Number, rotation: Number )
 		{
-			_text = text;
-			_fontName = fontName;
-			_embeddedFont = embeddedFont,
-			_safetyBorder = safetyBorder;
-			_rotation = rotation;
-			_size = size;
-			_tf = createTextField( fontName, embeddedFont, text, size, rotation );
-			_tf.x = -_tf.width/2;
-			_tf.y = -_tf.height/2;
-			alpha = 0.5;
-			filters = [ new GlowFilter( 0x000000, 1, safetyBorder, safetyBorder, 255 ) ];
-			cacheAsBitmap = true;
-			
-			addChild( _tf );
-		}
-
-		public function createTextField( fontName: String, embeddedFont: Boolean, text: String, size: Number, rotation: Number ): TextField
-		{
-			var result: TextField = new TextField();
-			result.embedFonts = embeddedFont;
-			result.textColor = 0x000000;
-			result.antiAliasType = AntiAliasType.ADVANCED;
-			result.text = text;
-			result.setTextFormat( new TextFormat( fontName, size ) );
-			result.autoSize = TextFieldAutoSize.LEFT;
-			result.background = false;
-			result.selectable = false;
-			result.rotation = rotation;
-			return result;
+			_object = createTextField( fontName, embeddedFont, text, size, rotation );
+			_shape =  createTextField( fontName, embeddedFont, text, size, rotation );
+			_shape.filters = [ new GlowFilter( 0x000000, 1, safetyBorder, safetyBorder, 255 ) ];
 		}
 		
-		public function get size(): Number
+		private function createTextField( fontName: String, embeddedFont: Boolean, text: String, size: Number, rotation: Number ): DisplayObject
 		{
-			return _tf.width * _tf.height;
+			var sprite: Sprite = new Sprite();
+			var textField: TextField = new TextField();
+			textField.embedFonts = embeddedFont;
+			textField.textColor = 0x000000;
+			textField.antiAliasType = AntiAliasType.ADVANCED;
+			textField.text = text;
+			textField.setTextFormat( new TextFormat( fontName, size ) );
+			textField.autoSize = TextFieldAutoSize.LEFT;
+			textField.background = false;
+			textField.selectable = false;
+			textField.rotation = rotation;
+			textField.x = -textField.width/2;
+			textField.y = -textField.height/2;
+			textField.cacheAsBitmap = true;
+			sprite.addChild( textField );
+			return sprite;
 		}
 		
-		public function clone(): IClonable
+		public function get shape(): DisplayObject
 		{
-			var result: TextDrawing = new TextDrawing( _fontName, _embeddedFont, _text, _safetyBorder, _size, _rotation );
-			result.x = x;
-			result.y = y;
-			result.alpha = alpha;
-			result.scaleX = scaleX;
-			result.scaleY = scaleY;
-			result.rotation = rotation;
-			return result;
+			return _shape;
+		}
+		
+		public function get object(): DisplayObject
+		{
+			return _object;
 		}
 	}
 }

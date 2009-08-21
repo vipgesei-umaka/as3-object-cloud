@@ -14,8 +14,8 @@
 //
 package at.leichtgewicht.cloud 
 {
-	import at.leichtgewicht.util.IClonableDisplayObject;	
-	import flash.events.Event;	
+	import flash.events.Event;
+
 	
 	/**
 	 * @author Martin Heidegger
@@ -25,17 +25,17 @@ package at.leichtgewicht.cloud
 	{
 		public static const UPDATE: String = "at.leichtgewicht.cloud.RenderProgressEvent::UPDATE";
 	
-		private var _positionatedObject: IClonableDisplayObject;
+		private var _positionatedObject: IShapeSet;
 		private var _percentage: Number;
 		
-		public function RenderProgressEvent( type: String, percentage: Number, positionatedObject: IClonableDisplayObject )
+		public function RenderProgressEvent( type: String, percentage: Number, positionatedObject: IShapeSet )
 		{
 			super( type );
 			_positionatedObject = positionatedObject;
 			_percentage = percentage;
 		}
 		
-		public function get positionatedObject(): IClonableDisplayObject
+		public function get positionatedObject(): IShapeSet
 		{
 			return _positionatedObject;
 		}

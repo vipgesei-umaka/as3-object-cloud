@@ -22,7 +22,7 @@ package at.leichtgewicht.cloud.algorithm
 	 */
 	public interface IPositionAlgorithm extends IEventDispatcher
 	{
-		function drawObjects( objects: Array ): void;
+		function drawShapeSets( shapeSets: Array ): void;
 		function get percentage(): Number;
 	}
 }

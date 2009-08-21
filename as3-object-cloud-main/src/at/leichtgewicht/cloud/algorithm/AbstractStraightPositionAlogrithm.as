@@ -14,8 +14,8 @@
 //
 package at.leichtgewicht.cloud.algorithm
 {
+	import at.leichtgewicht.cloud.IShapeSet;
 	import at.leichtgewicht.cloud.RenderProgressEvent;
-	import at.leichtgewicht.util.IClonableDisplayObject;
 
 	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
@@ -31,10 +31,10 @@ package at.leichtgewicht.cloud.algorithm
 	public class AbstractStraightPositionAlogrithm extends EventDispatcher implements IPositionAlgorithm
 	{
 		private var _percentage: Number;
-		private var _rawObjects: Array;
-		private var _currentObjectNo: Number = 0;
+		private var _shapeSets: Array;
+		private var _currentSetNo: Number = 0;
 		private var _timer: Timer;
-		private var _current: IClonableDisplayObject;
+		private var _currentShapeSet: IShapeSet;
 
 		public function AbstractStraightPositionAlogrithm()
 		{
@@ -42,12 +42,12 @@ package at.leichtgewicht.cloud.algorithm
 			_timer.addEventListener( TimerEvent.TIMER, nextTry );
 		}
 		
-		public function drawObjects( rawObjects: Array ): void
+		public function drawShapeSets( shapeSets: Array ): void
 		{
 			_percentage = 0;
-			_currentObjectNo = 0;
-			_rawObjects = rawObjects;
-			_current = rawObjects[ 0 ];
+			_currentSetNo = 0;
+			_shapeSets = shapeSets;
+			_currentShapeSet = shapeSets[ 0 ];
 			
 			clear();
 			
@@ -72,7 +72,7 @@ package at.leichtgewicht.cloud.algorithm
 			throw new Error( "not implemented" );
 		}
 		
-		protected function set current( current: DisplayObject ): void
+		protected function set currentShape( current: DisplayObject ): void
 		{
 			throw new Error( "not implemented" );
 		}
@@ -84,23 +84,29 @@ package at.leichtgewicht.cloud.algorithm
 		
 		private function nextChild(): Boolean
 		{
-			var formerObject: IClonableDisplayObject = _current;
+			var formerShapeSet: IShapeSet = _currentShapeSet;
 			var finished: Boolean = false;
 			
-			_currentObjectNo ++;
-			_percentage = _currentObjectNo / _rawObjects.length;
+			++ _currentSetNo;
+			_percentage = _currentSetNo / _shapeSets.length;
 			
-			if( _currentObjectNo > _rawObjects.length-1 )
+			if( _currentSetNo >= _shapeSets.length )
 			{
 				finish();
 				finished = true;
 			}
 			else
 			{
-				current = DisplayObject( _current = IClonableDisplayObject( _rawObjects[ _currentObjectNo ] ) );
+				_currentShapeSet = IShapeSet( _shapeSets[ _currentSetNo ] );
+				currentShape = _currentShapeSet.shape;
 			}
 			
-			dispatchEvent( new RenderProgressEvent( RenderProgressEvent.UPDATE, _percentage, formerObject ) );
+			if( formerShapeSet )
+			{
+				formerShapeSet.object.x = formerShapeSet.shape.x;
+				formerShapeSet.object.y = formerShapeSet.shape.y;
+				dispatchEvent( new RenderProgressEvent( RenderProgressEvent.UPDATE, _percentage, formerShapeSet ) );
+			}
 			
 			return finished;
 		}
@@ -108,9 +114,9 @@ package at.leichtgewicht.cloud.algorithm
 		private function nextTry( event: TimerEvent = null ): void
 		{
 			const executionStartTime: int = getTimer();
-			if( _currentObjectNo == 0 )
+			if( _currentSetNo == 0 )
 			{
-				current = DisplayObject( _current );
+				currentShape = _currentShapeSet.shape;
 				nextChild();
 			}
 			while( true )

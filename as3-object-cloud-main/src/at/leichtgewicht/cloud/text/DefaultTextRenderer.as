@@ -14,12 +14,9 @@
 //
 package at.leichtgewicht.cloud.text 
 {
-	
-	
+	import at.leichtgewicht.cloud.IShapeSet;
 
 	import de.polygonal.math.PM_PRNG;
-
-	import flash.display.DisplayObject;
 
 	
 	/**
@@ -46,12 +43,12 @@ package at.leichtgewicht.cloud.text
 			_prng = new PM_PRNG();
 		}
 
-		public function render( weightedWord: WeightedWord ): DisplayObject
+		public function render( weightedWord: WeightedWord ): IShapeSet
 		{
 			return renderWord( weightedWord.word, _minSize + ( _maxSize - _minSize ) * weightedWord.percentage );
 		}
 		
-		public function renderWord( word: String, weight: Number ): DisplayObject
+		public function renderWord( word: String, weight: Number ): IShapeSet
 		{
 			var rotation: Number = 0;
 			if( ROTATION_VERTICAL_ONLY == _rotationMode )
@@ -71,12 +68,7 @@ package at.leichtgewicht.cloud.text
 			{
 				rotation = 90 - 180 * _prng.nextDouble();
 			}
-			return new TextDrawing( _fontName, _embeddedFont, word, _safetyBorder, weight, rotation );;
-		}
-		
-		public function toString(): String
-		{
-			return null;
+			return new TextSet( _fontName, _embeddedFont, word, _safetyBorder, weight, rotation );;
 		}
 		
 		public function get rotationMode(): String
@@ -127,11 +119,6 @@ package at.leichtgewicht.cloud.text
 		public function set fontName(fontName: String): void
 		{
 			_fontName = fontName;
-		}
-		
-		public function reset(): void
-		{
-			
 		}
 		
 		public function get embeddedFont(): Boolean
