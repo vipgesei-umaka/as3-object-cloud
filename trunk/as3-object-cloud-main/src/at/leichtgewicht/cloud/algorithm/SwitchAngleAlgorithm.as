@@ -67,7 +67,7 @@ package at.leichtgewicht.cloud.algorithm
 			return _container.test( _currentBounds );
 		}
 		
-		override protected function set current( current: DisplayObject ): void
+		override protected function set currentShape( current: DisplayObject ): void
 		{
 			_currentChildStartX = 0;
 			_currentChildStartY = 0;

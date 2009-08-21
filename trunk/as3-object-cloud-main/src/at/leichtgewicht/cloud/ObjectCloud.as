@@ -15,7 +15,7 @@
 package at.leichtgewicht.cloud
 {
 	import at.leichtgewicht.cloud.algorithm.IPositionAlgorithm;
-	import flash.display.DisplayObject;
+
 	import flash.display.Sprite;
 
 	
@@ -75,7 +75,7 @@ package at.leichtgewicht.cloud
 			addChild( _container = new Sprite() );
 			if( _strategy && _objects )
 			{
-				_strategy.drawObjects( _objects );
+				_strategy.drawShapeSets( _objects );
 			}
 		}
 		
@@ -83,10 +83,7 @@ package at.leichtgewicht.cloud
 		{
 			if( event.positionatedObject )
 			{
-				var object: DisplayObject = DisplayObject( event.positionatedObject.clone() );
-				object.filters = null;
-				object.alpha = 1;
-				_container.addChild( object );
+				_container.addChild( event.positionatedObject.object );
 			}
 			dispatchEvent( new RenderProgressEvent( event.type, event.percentage, event.positionatedObject ) );
 		}
