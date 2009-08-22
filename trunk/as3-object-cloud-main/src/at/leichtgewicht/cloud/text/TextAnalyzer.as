@@ -14,18 +14,15 @@
 //
 package at.leichtgewicht.cloud.text 
 {
-	import at.leichtgewicht.cloud.ObjectCloud;
-
 	import de.polygonal.math.PM_PRNG;
-
 	
 	/**
 	 * @author Martin Heidegger
 	 * @version 1.0
 	 */
-	public class TagCloud extends ObjectCloud
+	public class TextAnalyzer
 	{
-		public function drawText( text: String, textRenderer: ITextRenderer, shuffle: Boolean = true ): void
+		public static function extractWords( text: String, textRenderer: ITextRenderer, shuffle: Boolean = true ): Array
 		{
 			var prng: PM_PRNG = new PM_PRNG();
 			var weights: Array = new WeightedWords( text ).getWordWeightsSorted();
@@ -36,17 +33,19 @@ package at.leichtgewicht.cloud.text
 			}
 			if( shuffle )
 			{
-				texts = shuffleArray( texts, prng );
+				return shuffleArray( texts, prng );
 			}
-			objects = texts;
+			return texts;
 		}
 		
-		private function shuffleArray( array: Array, prng: PM_PRNG ): Array
+		private static function shuffleArray( array: Array, prng: PM_PRNG ): Array
 		{
 			var newDrawings: Array = [];
 			while( array.length > 0 )
 			{
-				newDrawings.push( array.splice( int( prng.nextDouble() * array.length-1 ), 1 )[0] );
+				newDrawings.push(
+					array.splice( prng.nextIntRange( 0, array.length-1 ), 1) [0]
+				);
 			}
 			return newDrawings;
 		}
