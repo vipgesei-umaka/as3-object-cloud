@@ -4,7 +4,8 @@
 	<mx:Script>
 	<![CDATA[
 		import at.leichtgewicht.cloud.text.DefaultTextRenderer;
-		import at.leichtgewicht.cloud.text.TagCloud;
+		import at.leichtgewicht.cloud.text.TextAnalyzer;
+		import at.leichtgewicht.cloud.ObjectCloud;
 		import at.leichtgewicht.cloud.algorithm.CirclePositionAlgorithm;
 		import at.leichtgewicht.cloud.algorithm.SwitchAngleAlgorithm;
 		import at.leichtgewicht.cloud.algorithm.IPositionAlgorithm;
@@ -15,7 +16,7 @@
 		
 		public static const font: Font = new fontClass();
 	
-		private var _cloud: TagCloud;
+		private var _cloud: ObjectCloud;
 		private var _circleAlgorithm: CirclePositionAlgorithm;
 		private var _switchAlgorithm: SwitchAngleAlgorithm;
 		private var _loaded: Boolean = false;
@@ -29,7 +30,7 @@
 			_switchAlgorithm = new SwitchAngleAlgorithm();
 			_textRenderer.fontName = font.fontName;
 			_textRenderer.embeddedFont = true;
-			_cloud = new TagCloud();
+			_cloud = new ObjectCloud();
 			_progressDisplay = new ProgressDisplay( _cloud );
 			_progressDisplay.x = 270;
 			_progressDisplay.y = 20;
@@ -84,7 +85,7 @@
 					algo = _switchAlgorithm;
 				}
 				_cloud.strategy = algo;
-				_cloud.drawText( text.text, _textRenderer, shuffle.selected );
+				_cloud.objects = TextAnalyzer.extractWords( text.text, _textRenderer, shuffle.selected );
 			}
 		}
 	]]>
