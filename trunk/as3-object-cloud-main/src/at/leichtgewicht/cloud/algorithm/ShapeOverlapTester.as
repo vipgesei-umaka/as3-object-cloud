@@ -1,5 +1,6 @@
 package at.leichtgewicht.cloud.algorithm 
 {
+	import flash.display.BlendMode;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
@@ -52,7 +53,7 @@ package at.leichtgewicht.cloud.algorithm
 			HELPER_MATRIX.ty = -area.y;
 			HELPER_RECT.width = area.width;
 			HELPER_RECT.height = area.height;
-			_tester.draw( this, HELPER_MATRIX, null, null, HELPER_RECT, false );
+			_tester.draw( this, HELPER_MATRIX, null, BlendMode.DARKEN, HELPER_RECT, false );
 			return _tester.threshold( _tester, HELPER_RECT, TOP_LEFT,
 											"<=", 0xFF767676, 0xFFFF0000 ) != 0;
 		}

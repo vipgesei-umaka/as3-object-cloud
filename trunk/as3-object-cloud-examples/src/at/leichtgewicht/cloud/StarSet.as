@@ -1,7 +1,5 @@
 package at.leichtgewicht.cloud 
 {
-	import flash.filters.GlowFilter;
-
 	import at.leichtgewicht.cloud.IShapeSet;
 	import at.leichtgewicht.draw.Star;
 
@@ -11,6 +9,7 @@ package at.leichtgewicht.cloud
 	
 	/**
 	 * @author Martin Heidegger
+	 * @version 1.0
 	 */
 	public class StarSet implements IShapeSet 
 	{
