@@ -57,7 +57,7 @@ package at.leichtgewicht.cloud.text
 			HELPER_MATRIX.tx = -bounds.x + safetyBorder;
 			HELPER_MATRIX.ty = -bounds.y + safetyBorder;
 			
-			var bmp: Bitmap = new Bitmap( new BitmapData( bounds.width + safetyBorder * 2, bounds.height + safetyBorder * 2, true, 0x00000000 ) );
+			var bmp: Bitmap = new Bitmap( new BitmapData( bounds.width + safetyBorder * 2, bounds.height + safetyBorder * 2, false, 0xFFFFFFFF ) );
 			bmp.bitmapData.draw( _object, HELPER_MATRIX, null, null, null, true );
 			bmp.x = bounds.x;
 			bmp.y = bounds.y;
