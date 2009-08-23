@@ -16,13 +16,11 @@ package at.leichtgewicht.cloud.algorithm
 {
 	import at.leichtgewicht.cloud.IShapeSet;
 	import at.leichtgewicht.cloud.RenderProgressEvent;
-
 	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
-
 	
 	/**
 	 * @author Martin Heidegger
@@ -35,7 +33,7 @@ package at.leichtgewicht.cloud.algorithm
 		private var _currentSetNo: Number = 0;
 		private var _timer: Timer;
 		private var _currentShapeSet: IShapeSet;
-
+		
 		public function AbstractStraightPositionAlogrithm()
 		{
 			_timer = new Timer( Number.MIN_VALUE );

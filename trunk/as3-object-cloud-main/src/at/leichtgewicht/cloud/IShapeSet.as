@@ -15,15 +15,38 @@
 package at.leichtgewicht.cloud 
 {
 	import flash.display.DisplayObject;
-
 	
 	/**
+	 * Definition of basic objects to be arranged by the algorithms.
+	 * 
+	 * <p>For objects to be arranged by the algorithms of this frameworks they
+	 * have to implement this interface in which they provide both their object
+	 * as well as the shape which is used to find out if it overlaps or not.</p>
+	 * 
 	 * @author Martin Heidegger
 	 * @version 1.0
 	 */
 	public interface IShapeSet
 	{
+		/**
+		 * Object which will be displayed after the process for arranging the 
+		 * objects has been finished at the found positions.
+		 * 
+		 * @return Object to be arranged.
+		 */
 		function get object(): DisplayObject;
+		
+		/**
+		 * Getter for the shape of the object available with <code>.object</object.>
+		 * 
+		 * <p>The shape doesn't have to be of the type <code>flash.display.Shape</code>
+		 * but it has to be entirely in grayscale. The shape is one of the most crutial
+		 * aspects for the performance. If you implement your own shape take care to not
+		 * use filters or things alike that reduce the performance of <code>BitmapData.draw</code>.
+		 * </p>
+		 * 
+		 * @return Black shape of the object.
+		 */
 		function get shape(): DisplayObject;
 	}
 }
