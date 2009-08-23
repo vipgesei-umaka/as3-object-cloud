@@ -86,7 +86,7 @@
 				{
 					algo = _switchAlgorithm;
 				}
-				_cloud.strategy = algo;
+				_cloud.algorithm = algo;
 				if( drawText.selected )
 				{
 					_cloud.objects = TextAnalyzer.extractWords( text.text, _textRenderer, shuffle.selected );
