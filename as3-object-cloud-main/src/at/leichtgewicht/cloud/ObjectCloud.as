@@ -15,21 +15,37 @@
 package at.leichtgewicht.cloud
 {
 	import at.leichtgewicht.cloud.algorithm.IPositionAlgorithm;
-
 	import flash.display.Sprite;
-
 	
 	/**
+	 * Objects to 
+	 * 
 	 * @author Martin Heidegger
 	 * @version 1.0
 	 */
 	public class ObjectCloud extends Sprite
 	{
+		// Container that holds all objects. Its a seperate object to ease
+		// the process of cleaning the cloud.
 		private var _container: Sprite;
-		private var _strategy: IPositionAlgorithm;
+		
+		// The algorithm taken to positionate the objects
+		private var _algorithm: IPositionAlgorithm;
+		
+		// The objects that should be positionated.
 		private var _objects: Array;
-
-		public function ObjectCloud() {}
+		
+		/**
+		 * Constructs a new instance of the object cloud.
+		 * 
+		 * @param strategy Initial strategy to be used.
+		 * @param objects Initial objects to be passed to the strategy
+		 */
+		public function ObjectCloud( algorithm: IPositionAlgorithm = null, objects: Array = null )
+		{
+			this.algorithm = algorithm;
+			this.objects = objects;
+		}
 		
 		public function set objects( objects: Array ): void
 		{
@@ -42,30 +58,34 @@ package at.leichtgewicht.cloud
 			return _objects;
 		}
 		
-		public function set strategy(strategy: IPositionAlgorithm): void
+		public function set algorithm(algorithm: IPositionAlgorithm): void
 		{
-			if( _strategy )
+			if( _algorithm )
 			{
-				_strategy.removeEventListener( RenderProgressEvent.UPDATE, onPositionEvent );
+				_algorithm.removeEventListener( RenderProgressEvent.UPDATE, onPositionEvent );
 			}
-			_strategy = strategy;
-			if( _strategy )
+			_algorithm = algorithm;
+			if( _algorithm )
 			{
-				_strategy.addEventListener( RenderProgressEvent.UPDATE, onPositionEvent );
+				_algorithm.addEventListener( RenderProgressEvent.UPDATE, onPositionEvent );
 			}
 			clear();
 		}
 		
-		public function get strategy(): IPositionAlgorithm
+		public function get algorithm(): IPositionAlgorithm
 		{
-			return _strategy;
+			return _algorithm;
 		}
 		
 		public function get percentage(): Number
 		{
-			return _strategy.percentage;
+			return _algorithm.percentage;
 		}
 		
+		/**
+		 * Clears the current rendering and starts the next one depending to the
+		 * current strategy.
+		 */
 		private function clear(): void
 		{
 			if( _container )
@@ -73,12 +93,18 @@ package at.leichtgewicht.cloud
 				removeChild( _container );
 			}
 			addChild( _container = new Sprite() );
-			if( _strategy && _objects )
+			if( _algorithm && _objects )
 			{
-				_strategy.drawShapeSets( _objects );
+				_algorithm.drawShapeSets( _objects );
 			}
 		}
 		
+		/**
+		 * Adds the object for which a position was found to the container
+		 * (in order to have it visible).
+		 * 
+		 * @param event Event sent by the positioning algorithm.
+		 */
 		private function onPositionEvent( event: RenderProgressEvent ): void
 		{
 			if( event.positionatedObject )
