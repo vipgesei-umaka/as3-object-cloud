@@ -14,6 +14,11 @@
 //
 package at.leichtgewicht.cloud.text
 {
+	import flash.geom.Matrix;
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.geom.Rectangle;
+
 	import Boolean;
 	import Number;
 	import String;
@@ -34,19 +39,34 @@ package at.leichtgewicht.cloud.text
 	 */
 	public class TextSet implements IShapeSet
 	{
-		private var _object: DisplayObject;
-		private var _shape: DisplayObject;
+		private static const HELPER_MATRIX: Matrix = new Matrix();
+		
+		private var _object: Sprite;
+		private var _shape: Sprite;
 		
 		public function TextSet( fontName: String, embeddedFont: Boolean, text: String, safetyBorder: Number, size: Number, rotation: Number )
 		{
-			_object = createTextField( fontName, embeddedFont, text, size, rotation );
-			_shape =  createTextField( fontName, embeddedFont, text, size, rotation );
-			_shape.filters = [ new GlowFilter( 0x000000, 1, safetyBorder, safetyBorder, 255 ) ];
+			_object = new Sprite();
+			var tF: TextField = createTextField( fontName, embeddedFont, text, size );
+			tF.rotation = rotation;
+			_object.addChild( tF );
+			_object.filters = [ new GlowFilter( 0x000000, 1, safetyBorder, safetyBorder, 255 ) ];
+			
+			_shape = new Sprite();
+			var bounds: Rectangle = _object.getBounds( _object );
+			HELPER_MATRIX.tx = -bounds.x + safetyBorder;
+			HELPER_MATRIX.ty = -bounds.y + safetyBorder;
+			
+			var bmp: Bitmap = new Bitmap( new BitmapData( bounds.width + safetyBorder * 2, bounds.height + safetyBorder * 2, true, 0x00000000 ) );
+			bmp.bitmapData.draw( _object, HELPER_MATRIX, null, null, null, true );
+			bmp.x = bounds.x;
+			bmp.y = bounds.y;
+			_shape.addChild( bmp );
+			_object.filters = [];
 		}
 		
-		private function createTextField( fontName: String, embeddedFont: Boolean, text: String, size: Number, rotation: Number ): DisplayObject
+		private function createTextField( fontName: String, embeddedFont: Boolean, text: String, size: Number ): TextField
 		{
-			var sprite: Sprite = new Sprite();
 			var textField: TextField = new TextField();
 			textField.embedFonts = embeddedFont;
 			textField.textColor = 0x000000;
@@ -56,12 +76,10 @@ package at.leichtgewicht.cloud.text
 			textField.autoSize = TextFieldAutoSize.LEFT;
 			textField.background = false;
 			textField.selectable = false;
-			textField.rotation = rotation;
 			textField.x = -textField.width/2;
 			textField.y = -textField.height/2;
 			textField.cacheAsBitmap = true;
-			sprite.addChild( textField );
-			return sprite;
+			return textField;
 		}
 		
 		public function get shape(): DisplayObject
